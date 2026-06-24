@@ -34,48 +34,64 @@ h1, h2, h3, h4, h5, h6 {
     letter-spacing: -0.025em;
 }
 
+/* Text Rotator */
+.text-rotator {
+    position: relative;
+}
+
+.text-rotator-inner {
+    will-change: transform;
+}
+
+.text-rotator-item {
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    white-space: nowrap;
+}
+
 /* Hero enhancements */
 .hero {
     position: relative;
 }
 
-/* Animated color overlay on hero */
+/* Rich vignette + gradient overlay */
 .hero::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(15, 23, 42, 0.85) 0%, rgba(30, 41, 59, 0.6) 50%, rgba(120, 53, 15, 0.4) 100%);
+    background:
+        radial-gradient(ellipse 80% 60% at 50% 50%, transparent 0%, rgba(2, 6, 23, 0.6) 100%),
+        linear-gradient(180deg, rgba(15, 23, 42, 0.5) 0%, rgba(2, 6, 23, 0.85) 100%),
+        linear-gradient(135deg, rgba(120, 53, 15, 0.25) 0%, transparent 60%);
     z-index: 1;
     pointer-events: none;
 }
 
-/* Subtle animated mesh gradient overlay */
+/* Animated warm glow spots */
 .hero::after {
     content: '';
     position: absolute;
     inset: 0;
     background:
-        radial-gradient(circle at 20% 50%, rgba(217, 119, 6, 0.08) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(245, 158, 11, 0.06) 0%, transparent 50%),
-        radial-gradient(circle at 50% 10%, rgba(251, 191, 36, 0.04) 0%, transparent 40%);
+        radial-gradient(circle at 15% 40%, rgba(217, 119, 6, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 85% 70%, rgba(245, 158, 11, 0.08) 0%, transparent 40%);
     z-index: 1;
     pointer-events: none;
-    animation: heroMesh 10s ease-in-out infinite alternate;
+    animation: heroGlow 8s ease-in-out infinite alternate;
 }
 
-@keyframes heroMesh {
-    0% { opacity: 0.6; transform: scale(1); }
-    100% { opacity: 1; transform: scale(1.05); }
+@keyframes heroGlow {
+    0% { opacity: 0.5; }
+    100% { opacity: 1; }
 }
 
-/* Hero slide zoom effect */
+/* Hero slide zoom + subtle pan */
 .hero-slide {
-    animation: heroZoom 20s ease-in-out infinite alternate;
+    animation: heroZoom 25s ease-in-out infinite alternate;
 }
 
 @keyframes heroZoom {
-    0% { transform: scale(1); }
-    100% { transform: scale(1.08); }
+    0% { transform: scale(1) translate(0, 0); }
+    100% { transform: scale(1.1) translate(-1%, -1%); }
 }
 
 /* Top bar text size */
@@ -187,6 +203,20 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .animate-marquee:hover {
+    animation-play-state: paused;
+}
+
+/* Testimonial horizontal scroll animation */
+@keyframes testimonial-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+.animate-testimonial-scroll {
+    animation: testimonial-scroll 40s linear infinite;
+}
+
+.animate-testimonial-scroll:hover {
     animation-play-state: paused;
 }
 

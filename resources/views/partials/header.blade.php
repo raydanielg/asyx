@@ -7,13 +7,18 @@
         </a>
 
         <!-- Nav Links -->
-        <nav class="hidden lg:flex items-center space-x-6 text-sm font-medium text-slate-700">
+        <nav class="hidden lg:flex items-center space-x-5 text-sm font-medium text-slate-700">
             <a href="#home" class="hover:text-amber-600 transition">{{ __('landing.nav_home') }}</a>
             <a href="#about" class="hover:text-amber-600 transition">{{ __('landing.nav_about') }}</a>
             <a href="#services" class="hover:text-amber-600 transition">{{ __('landing.nav_services') }}</a>
             <a href="#solutions" class="hover:text-amber-600 transition">{{ __('landing.nav_solutions') }}</a>
             <a href="#industries" class="hover:text-amber-600 transition">{{ __('landing.nav_industries') }}</a>
-            <a href="#projects" class="hover:text-amber-600 transition">{{ __('landing.nav_projects') }}</a>
+            <a href="{{ route('careers.index') }}" class="text-amber-600 hover:text-amber-700 transition relative">
+                <span class="flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 bg-amber-500 rounded-full animate-pulse"></span>
+                    Careers
+                </span>
+            </a>
             <a href="#contact" class="hover:text-amber-600 transition">{{ __('landing.nav_contact') }}</a>
         </nav>
 
@@ -32,8 +37,8 @@
                 </div>
             </div>
 
-            <a href="#contact" class="bg-amber-600 text-white px-5 py-2.5 rounded-lg font-semibold text-sm hover:bg-amber-700 transition shadow-md">
-                {{ __('landing.cta_get_quote') }}
+            <a href="{{ route('quote') }}" class="bg-gradient-to-r from-amber-500 to-amber-600 text-white px-5 py-2.5 rounded-lg font-bold text-sm hover:from-amber-600 hover:to-amber-700 transition shadow-lg hover:shadow-amber-500/30 flex items-center gap-2">
+                <i class="fas fa-file-invoice-dollar text-xs"></i> {{ __('landing.cta_get_quote') }}
             </a>
         </div>
 
@@ -51,13 +56,18 @@
             <a href="#services" class="block py-2 hover:text-amber-600">{{ __('landing.nav_services') }}</a>
             <a href="#solutions" class="block py-2 hover:text-amber-600">{{ __('landing.nav_solutions') }}</a>
             <a href="#industries" class="block py-2 hover:text-amber-600">{{ __('landing.nav_industries') }}</a>
-            <a href="#projects" class="block py-2 hover:text-amber-600">{{ __('landing.nav_projects') }}</a>
+            <a href="{{ route('careers.index') }}" class="block py-2 text-amber-600 font-semibold">
+                <span class="flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 bg-amber-500 rounded-full animate-pulse"></span>
+                    Careers
+                </span>
+            </a>
             <a href="#contact" class="block py-2 hover:text-amber-600">{{ __('landing.nav_contact') }}</a>
             <hr class="border-slate-100">
             <a href="{{ url('/?lang=en') }}" class="block py-2 {{ app()->getLocale() == 'en' ? 'text-amber-600 font-semibold' : '' }}">{{ __('landing.lang_english') }}</a>
             <a href="{{ url('/?lang=sw') }}" class="block py-2 {{ app()->getLocale() == 'sw' ? 'text-amber-600 font-semibold' : '' }}">{{ __('landing.lang_swahili') }}</a>
-            <a href="#contact" class="block bg-amber-600 text-white text-center px-5 py-2.5 rounded-lg font-semibold hover:bg-amber-700 transition mt-2">
-                {{ __('landing.cta_get_quote') }}
+            <a href="{{ route('quote') }}" class="block bg-gradient-to-r from-amber-500 to-amber-600 text-white text-center px-5 py-2.5 rounded-lg font-bold hover:from-amber-600 hover:to-amber-700 transition shadow-lg mt-2 flex items-center justify-center gap-2">
+                <i class="fas fa-file-invoice-dollar text-xs"></i> {{ __('landing.cta_get_quote') }}
             </a>
         </div>
     </div>

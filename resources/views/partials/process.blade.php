@@ -1,36 +1,72 @@
 <!-- Process Section: How We Work -->
-<section class="process py-20 lg:py-28 bg-slate-900 text-white">
-    <div class="container mx-auto px-6">
+<section class="process py-20 lg:py-28 bg-slate-50 relative overflow-hidden">
+    <div class="container mx-auto px-6 relative z-10">
         <div class="text-center mb-16" data-aos="fade-up">
-            <span class="text-amber-500 font-semibold text-sm uppercase tracking-wider">Methodology</span>
-            <h2 class="text-3xl md:text-4xl font-bold mt-3">{{ __('landing.process_title') }}</h2>
-            <p class="text-slate-400 mt-4 max-w-2xl mx-auto">{{ __('landing.process_subtitle') }}</p>
+            <span class="text-amber-600 font-semibold text-sm uppercase tracking-wider">Methodology</span>
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-extrabold text-slate-900 mt-3">How We Work</h2>
+            <p class="text-slate-500 mt-4 max-w-2xl mx-auto text-lg">A proven six-step process ensuring every project is delivered on time, on budget, and beyond expectations.</p>
         </div>
 
-        <div class="grid md:grid-cols-3 lg:grid-cols-6 gap-6">
-            @php
-            $steps = [
-                ['num' => '01', 'icon' => 'fa-comments', 'title' => 'step_consultation'],
-                ['num' => '02', 'icon' => 'fa-magnifying-glass', 'title' => 'step_assessment'],
-                ['num' => '03', 'icon' => 'fa-pen-ruler', 'title' => 'step_design'],
-                ['num' => '04', 'icon' => 'fa-rocket', 'title' => 'step_implementation'],
-                ['num' => '05', 'icon' => 'fa-vial', 'title' => 'step_testing'],
-                ['num' => '06', 'icon' => 'fa-life-ring', 'title' => 'step_support'],
-            ];
-            @endphp
+        @php
+        $steps = [
+            ['num' => '01', 'title' => 'Consultation', 'desc' => 'We listen to understand your goals, challenges, and vision for the project.'],
+            ['num' => '02', 'title' => 'Assessment', 'desc' => 'We audit your current systems and identify key improvement areas.'],
+            ['num' => '03', 'title' => 'Design', 'desc' => 'We architect a tailored solution blueprint aligned with your needs.'],
+            ['num' => '04', 'title' => 'Implementation', 'desc' => 'We deploy and integrate systems with minimal business disruption.'],
+            ['num' => '05', 'title' => 'Testing', 'desc' => 'We rigorously test to ensure quality, security, and reliability.'],
+            ['num' => '06', 'title' => 'Support', 'desc' => 'We provide ongoing maintenance, training, and 24/7 expert support.'],
+        ];
+        @endphp
+
+        <!-- Desktop: Clean horizontal steps -->
+        <div class="hidden lg:flex items-start justify-between gap-4 relative">
+            <!-- Horizontal connecting line -->
+            <div class="absolute top-[30px] left-[60px] right-[60px] h-0.5 bg-slate-200"></div>
 
             @foreach($steps as $i => $step)
-            <div class="text-center" data-aos="fade-up" data-aos-delay="{{ $i * 100 }}">
-                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all relative">
-                    <div class="text-amber-500 text-sm font-bold mb-3">{{ $step['num'] }}</div>
-                    <div class="w-12 h-12 bg-amber-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas {{ $step['icon'] }} text-white"></i>
-                    </div>
-                    <h3 class="font-bold">{{ __("landing.{$step['title']}") }}</h3>
+            <div class="relative flex-1 text-center group" data-aos="fade-up" data-aos-delay="{{ $i * 100 }}">
+                <!-- Step Number Badge -->
+                <div class="relative z-10 inline-flex items-center justify-center w-[60px] h-[60px] rounded-full bg-white border-2 border-slate-200 group-hover:border-amber-500 group-hover:bg-amber-50 transition-all duration-300 mx-auto mb-6 shadow-sm">
+                    <span class="text-xl font-extrabold text-slate-400 group-hover:text-amber-600 transition-colors">{{ $step['num'] }}</span>
                 </div>
+
+                <!-- Arrow between steps -->
                 @if($i < 5)
-                <div class="hidden lg:block absolute top-1/2 -right-3 w-6 h-0.5 bg-amber-600/50 transform -translate-y-1/2"></div>
+                <div class="absolute top-[24px] left-[calc(50%+30px)] right-0 flex items-center justify-center">
+                    <i class="fas fa-chevron-right text-slate-300 text-xs"></i>
+                </div>
                 @endif
+
+                <h3 class="font-bold text-slate-900 text-lg mb-2 group-hover:text-amber-700 transition-colors">{{ $step['title'] }}</h3>
+                <p class="text-slate-500 text-sm leading-relaxed px-1">{{ $step['desc'] }}</p>
+            </div>
+            @endforeach
+        </div>
+
+        <!-- Tablet: 3 columns -->
+        <div class="hidden md:grid lg:hidden grid-cols-3 gap-6">
+            @foreach($steps as $i => $step)
+            <div class="group bg-white rounded-2xl p-6 border border-slate-100 hover:border-amber-300 hover:shadow-lg transition-all duration-300 text-center relative overflow-hidden" data-aos="fade-up" data-aos-delay="{{ $i * 75 }}">
+                <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-400 to-amber-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+                <div class="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-amber-500 transition-colors">
+                    <span class="text-lg font-extrabold text-amber-600 group-hover:text-white transition-colors">{{ $step['num'] }}</span>
+                </div>
+                <h3 class="font-bold text-slate-900 text-lg mb-2 group-hover:text-amber-700 transition-colors">{{ $step['title'] }}</h3>
+                <p class="text-slate-500 text-sm leading-relaxed">{{ $step['desc'] }}</p>
+            </div>
+            @endforeach
+        </div>
+
+        <!-- Mobile: 2 columns -->
+        <div class="md:hidden grid grid-cols-2 gap-4">
+            @foreach($steps as $i => $step)
+            <div class="group bg-white rounded-xl p-4 border border-slate-100 hover:border-amber-300 hover:shadow-lg transition-all duration-300 text-center relative overflow-hidden" data-aos="fade-up" data-aos-delay="{{ $i * 75 }}">
+                <div class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-amber-400 to-amber-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+                <div class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:bg-amber-500 transition-colors">
+                    <span class="text-sm font-extrabold text-amber-600 group-hover:text-white transition-colors">{{ $step['num'] }}</span>
+                </div>
+                <h3 class="font-bold text-slate-900 text-sm mb-1 group-hover:text-amber-700 transition-colors">{{ $step['title'] }}</h3>
+                <p class="text-slate-500 text-xs leading-relaxed">{{ $step['desc'] }}</p>
             </div>
             @endforeach
         </div>

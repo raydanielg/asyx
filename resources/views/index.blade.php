@@ -11,7 +11,6 @@
     @include('partials.products')
     @include('partials.why')
     @include('partials.process')
-    @include('partials.projects')
     @include('partials.sectors')
     @include('partials.testimonials')
     @include('partials.certifications')
@@ -19,5 +18,4 @@
     @include('partials.careers')
     @include('partials.cta')
     @include('partials.contact')
-    @include('partials.newsletter')
 @endsection

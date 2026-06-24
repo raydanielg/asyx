@@ -23,5 +23,8 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('asyxgroup2024'),
             'is_admin' => true,
         ]);
+
+        $this->call(BlogSeeder::class);
+        $this->call(CareerSeeder::class);
     }
 }
