@@ -1,0 +1,202 @@
+/* ============================================
+   ASYX Group Landing Page Styles
+   Enterprise-grade styling with Nunito font
+   ============================================ */
+
+/* Smooth scroll for anchor links */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+    background: #d97706;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #b45309;
+}
+
+/* Font family override using Nunito */
+body {
+    font-family: 'Nunito', ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Typography refinements */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 800;
+    letter-spacing: -0.025em;
+}
+
+/* Hero enhancements */
+.hero {
+    position: relative;
+}
+
+/* Animated color overlay on hero */
+.hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.85) 0%, rgba(30, 41, 59, 0.6) 50%, rgba(120, 53, 15, 0.4) 100%);
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Subtle animated mesh gradient overlay */
+.hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 20% 50%, rgba(217, 119, 6, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(245, 158, 11, 0.06) 0%, transparent 50%),
+        radial-gradient(circle at 50% 10%, rgba(251, 191, 36, 0.04) 0%, transparent 40%);
+    z-index: 1;
+    pointer-events: none;
+    animation: heroMesh 10s ease-in-out infinite alternate;
+}
+
+@keyframes heroMesh {
+    0% { opacity: 0.6; transform: scale(1); }
+    100% { opacity: 1; transform: scale(1.05); }
+}
+
+/* Hero slide zoom effect */
+.hero-slide {
+    animation: heroZoom 20s ease-in-out infinite alternate;
+}
+
+@keyframes heroZoom {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.08); }
+}
+
+/* Top bar text size */
+.top-bar {
+    font-size: 0.8125rem;
+}
+
+/* Header shadow on scroll */
+.header {
+    transition: box-shadow 0.3s ease;
+}
+.header.scrolled {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Service cards hover lift */
+.services .group:hover {
+    transform: translateY(-4px);
+}
+
+/* Solutions card glow */
+.solutions [class*="backdrop-blur"] {
+    transition: all 0.3s ease;
+}
+
+/* Industries icon bounce */
+.industries [class*="hover:shadow-lg"]:hover i {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+}
+
+/* Process step connector - hidden on mobile */
+.process .grid > div {
+    position: relative;
+}
+
+/* Testimonial card hover */
+.testimonials [class*="bg-slate-50"]:hover {
+    border-color: #d97706;
+}
+
+/* CTA section pulse animation */
+@keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.2); }
+    50% { box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0.1); }
+}
+
+.cta {
+    position: relative;
+}
+
+/* Contact form focus states */
+.contact input:focus,
+.contact textarea:focus {
+    box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.2);
+}
+
+/* Newsletter input */
+.newsletter input::placeholder {
+    color: #94a3b8;
+}
+
+/* Footer link transitions */
+.footer a {
+    transition: color 0.2s ease;
+}
+
+/* Social icon hover spin */
+.footer .fab:hover {
+    transform: rotate(5deg) scale(1.1);
+    transition: all 0.2s ease;
+}
+
+/* Mobile menu animation */
+#mobileMenu {
+    transition: all 0.3s ease;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 2rem;
+    }
+}
+
+/* Animation for stats counter on hero */
+@keyframes countUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Partner logos grayscale to color */
+.partners .text-2xl {
+    filter: grayscale(100%);
+    transition: filter 0.3s ease;
+}
+.partners .text-2xl:hover {
+    filter: grayscale(0%);
+}
+
+/* Marquee scrolling animation */
+@keyframes marquee-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+    animation: marquee-scroll 30s linear infinite;
+}
+
+.animate-marquee:hover {
+    animation-play-state: paused;
+}
+
+/* Section spacing consistency */
+section {
+    position: relative;
+}
+
+/* Loading state for buttons */
+button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
