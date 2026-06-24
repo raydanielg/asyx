@@ -188,11 +188,25 @@ Route::middleware(SetLocale::class)->group(function () {
     })->name('newsletter.subscribe');
 });
 
-Auth::routes();
+Auth::routes(['register' => false, 'reset' => false]);
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 // Admin routes - protected by IsAdmin middleware
 Route::middleware(['auth', IsAdmin::class])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+
+    // Users
+    Route::get('/users', [AdminController::class, 'users'])->name('users');
+    Route::post('/users', [AdminController::class, 'storeUser'])->name('users.store');
+
+    // Submissions
+    Route::get('/submissions', [AdminController::class, 'submissions'])->name('submissions');
+
+    // Newsletter
+    Route::get('/newsletter', [AdminController::class, 'newsletter'])->name('newsletter');
+    Route::patch('/newsletter/{subscriber}/toggle', [AdminController::class, 'toggleNewsletter'])->name('newsletter.toggle');
+
+    // Blog
+    Route::get('/blog', [AdminController::class, 'blog'])->name('blog');
 });

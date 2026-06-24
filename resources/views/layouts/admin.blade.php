@@ -12,89 +12,131 @@
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=Nunito:300,400,500,600,700,800,900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.bunny.net/css?family=Nunito:400,500,600,700,800,900&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
+        @keyframes fadeIn { from { opacity:0 } to { opacity:1 } }
+        .animate-fade { animation: fadeIn 0.3s ease-out both; }
         body { font-family: 'Nunito', ui-sans-serif, system-ui, sans-serif; }
-        .sidebar-link { transition: all 0.2s; }
-        .sidebar-link:hover, .sidebar-link.active { background: rgba(245, 158, 11, 0.1); color: #d97706; border-right: 3px solid #d97706; }
+        .sidebar-link { transition: all 0.2s ease; }
+        .sidebar-link:hover { background: rgba(255,255,255,0.06); }
+        .sidebar-link.active { background: rgba(255,255,255,0.08); color: #fff; }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #d97706; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800">
-    <div class="flex h-screen overflow-hidden">
-        {{-- Sidebar --}}
-        <aside class="w-64 bg-white border-r border-slate-200 flex-shrink-0 hidden md:flex flex-col">
-            <div class="h-16 flex items-center px-6 border-b border-slate-200">
-                <a href="/" class="flex items-center space-x-3">
-                    <img src="/asyxgrouplogo.png" alt="{{ config('app.name') }}" class="h-8 w-auto object-contain">
-                    <span class="font-bold text-slate-800 text-lg">Admin</span>
-                </a>
-            </div>
-            <nav class="flex-1 py-4 space-y-1">
-                <a href="{{ route('admin.dashboard') }}" class="sidebar-link flex items-center px-6 py-3 text-sm font-medium text-slate-600 {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                    <i class="fas fa-chart-line w-5 mr-3"></i> Dashboard
-                </a>
-                <a href="#" class="sidebar-link flex items-center px-6 py-3 text-sm font-medium text-slate-600">
-                    <i class="fas fa-newspaper w-5 mr-3"></i> Blog / Content
-                </a>
-                <a href="#" class="sidebar-link flex items-center px-6 py-3 text-sm font-medium text-slate-600">
-                    <i class="fas fa-database w-5 mr-3"></i> Database
-                </a>
-                <a href="#" class="sidebar-link flex items-center px-6 py-3 text-sm font-medium text-slate-600">
-                    <i class="fas fa-users w-5 mr-3"></i> Users
-                </a>
-                <a href="#" class="sidebar-link flex items-center px-6 py-3 text-sm font-medium text-slate-600">
-                    <i class="fas fa-cog w-5 mr-3"></i> Settings
-                </a>
-            </nav>
-            <div class="p-4 border-t border-slate-200">
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="w-full flex items-center px-4 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition">
-                        <i class="fas fa-sign-out-alt w-5 mr-3"></i> Log Out
-                    </button>
-                </form>
-            </div>
-        </aside>
+<body class="bg-gray-50 text-slate-800 antialiased">
 
-        {{-- Main Content --}}
-        <div class="flex-1 flex flex-col overflow-hidden">
-            {{-- Topbar --}}
-            <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6">
-                <div class="flex items-center md:hidden">
-                    <button id="mobileMenuBtn" class="text-slate-500 hover:text-slate-700">
-                        <i class="fas fa-bars text-xl"></i>
-                    </button>
-                </div>
-                <div class="flex items-center space-x-4 ml-auto">
-                    <div class="text-right hidden sm:block">
-                        <p class="text-sm font-semibold text-slate-800">{{ Auth::user()->name }}</p>
-                        <p class="text-xs text-slate-500">Administrator</p>
-                    </div>
-                    <div class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center">
-                        <i class="fas fa-user-shield text-amber-600"></i>
-                    </div>
-                </div>
-            </header>
+    <!-- Mobile Overlay -->
+    <div id="mobileOverlay" class="fixed inset-0 bg-black/50 z-40 hidden lg:hidden" onclick="toggleSidebar()"></div>
 
-            {{-- Page Content --}}
-            <main class="flex-1 overflow-y-auto p-6">
-                @yield('content')
-            </main>
+    <!-- Sidebar -->
+    <aside id="adminSidebar" class="fixed top-0 left-0 z-50 w-64 h-screen bg-[#0f172a] transform -translate-x-full lg:translate-x-0 transition-transform duration-300 flex flex-col">
+        <!-- Brand -->
+        <div class="h-16 flex items-center px-5 border-b border-slate-700/50 flex-shrink-0">
+            <img src="/asyxgrouplogo.png" alt="{{ config('app.name') }}" class="h-8 w-auto object-contain brightness-0 invert">
+            <span class="ml-2 text-white font-bold text-sm tracking-wide">ADMIN</span>
         </div>
+
+        <!-- Menu -->
+        <div class="flex-1 overflow-y-auto py-4 px-3 space-y-1">
+            <a href="{{ route('admin.dashboard') }}" class="sidebar-link w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 text-sm font-medium {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="{{ route('admin.users') }}" class="sidebar-link w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 text-sm font-medium {{ request()->routeIs('admin.users*') ? 'active' : '' }}">
+                <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                <span>Users</span>
+            </a>
+
+            <a href="{{ route('admin.submissions') }}" class="sidebar-link w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 text-sm font-medium {{ request()->routeIs('admin.submissions*') ? 'active' : '' }}">
+                <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                <span>Submissions</span>
+            </a>
+
+            <a href="{{ route('admin.newsletter') }}" class="sidebar-link w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 text-sm font-medium {{ request()->routeIs('admin.newsletter*') ? 'active' : '' }}">
+                <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                <span>Newsletter</span>
+            </a>
+
+            <a href="{{ route('admin.blog') }}" class="sidebar-link w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 text-sm font-medium {{ request()->routeIs('admin.blog*') ? 'active' : '' }}">
+                <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
+                <span>Blog / Content</span>
+            </a>
+
+            <a href="#" class="sidebar-link w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 text-sm font-medium">
+                <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                <span>Settings</span>
+            </a>
+        </div>
+
+        <!-- Bottom User -->
+        <div class="p-4 border-t border-slate-700/50">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-white font-bold text-xs">
+                    {{ strtoupper(substr(Auth::user()->name ?? 'A', 0, 1)) }}
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-semibold text-white truncate">{{ Auth::user()->name ?? 'Admin' }}</p>
+                    <p class="text-xs text-slate-400">Administrator</p>
+                </div>
+                <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('admin-logout').submit();" class="text-slate-400 hover:text-white transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                </a>
+                <form id="admin-logout" action="{{ route('logout') }}" method="POST" class="hidden">@csrf</form>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="lg:ml-64 min-h-screen flex flex-col">
+
+        <!-- Header -->
+        <header class="h-16 bg-white border-b border-gray-100 flex items-center justify-between px-6 sticky top-0 z-30">
+            <div class="flex items-center gap-3">
+                <button onclick="toggleSidebar()" class="lg:hidden p-2 rounded-lg hover:bg-gray-100 text-gray-600">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
+                <h1 class="text-lg font-bold text-gray-800">@yield('page_title', 'Dashboard')</h1>
+            </div>
+            <div class="flex items-center gap-4">
+                <!-- Search -->
+                <div class="hidden md:flex items-center bg-gray-50 rounded-lg px-3 py-1.5 border border-gray-100">
+                    <svg class="w-4 h-4 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    <input type="text" placeholder="Search..." class="bg-transparent text-sm outline-none w-48 text-gray-600 placeholder-gray-400">
+                </div>
+                <!-- Notifications -->
+                <button class="relative p-2 rounded-lg hover:bg-gray-100 text-gray-500 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                    <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        <main class="flex-1 p-6 animate-fade">
+            @yield('content')
+        </main>
+
     </div>
 
     <script>
-        document.getElementById('mobileMenuBtn')?.addEventListener('click', () => {
-            document.querySelector('aside').classList.toggle('hidden');
-            document.querySelector('aside').classList.toggle('absolute');
-            document.querySelector('aside').classList.toggle('z-50');
-            document.querySelector('aside').classList.toggle('h-full');
-        });
+        function toggleSidebar() {
+            const sidebar = document.getElementById('adminSidebar');
+            const overlay = document.getElementById('mobileOverlay');
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+        }
     </script>
+    @stack('scripts')
 </body>
 </html>

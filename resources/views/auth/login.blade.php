@@ -3,14 +3,18 @@
 @section('title', 'Login - ' . config('app.name'))
 
 @section('content')
-<div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+<div class="bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden">
     {{-- Header --}}
-    <div class="bg-gradient-to-br from-amber-600 to-amber-700 px-8 py-8 text-center">
-        <div class="w-16 h-16 mx-auto bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-4">
-            <img src="/asyxgrouplogo.png" alt="{{ config('app.name') }}" class="w-10 h-10 object-contain">
+    <div class="bg-white px-8 pt-8 pb-6 text-center border-b border-slate-100 relative">
+        <!-- Subtle grid lines -->
+        <div class="absolute inset-0 opacity-[0.03]" style="background-image: linear-gradient(#000 1px, transparent 1px), linear-gradient(90deg, #000 1px, transparent 1px); background-size: 24px 24px;"></div>
+
+        <div class="relative z-10">
+            <!-- Logo transparent directly -->
+            <img src="/asyxgrouplogo.png" alt="{{ config('app.name') }}" class="h-16 w-auto mx-auto mb-3 object-contain">
+            <h2 class="text-2xl font-extrabold text-slate-900">Welcome Back</h2>
+            <p class="text-slate-500 text-sm mt-1">Sign in to your <span class="text-amber-600 font-semibold">{{ config('app.name') }}</span> account</p>
         </div>
-        <h2 class="text-2xl font-extrabold text-white">Welcome Back</h2>
-        <p class="text-amber-100 text-sm mt-1">Sign in to your {{ config('app.name') }} account</p>
     </div>
 
     {{-- Form --}}
@@ -69,17 +73,13 @@
             </button>
         </form>
 
-        {{-- Divider --}}
-        <div class="relative my-6">
-            <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-gray-200"></div></div>
-            <div class="relative flex justify-center text-sm"><span class="px-3 bg-white text-gray-400">or</span></div>
+        {{-- Access restricted --}}
+        <div class="mt-5 bg-amber-50 border border-amber-200 rounded-lg p-3 text-center">
+            <p class="text-xs text-amber-700 flex items-center justify-center gap-2">
+                <i class="fas fa-lock text-amber-500"></i>
+                Account creation is restricted. Contact admin for access.
+            </p>
         </div>
-
-        {{-- Register link --}}
-        <p class="text-center text-sm text-gray-500">
-            Don't have an account?
-            <a href="{{ route('register') }}" class="font-semibold text-amber-600 hover:text-amber-700 transition-colors">Create account</a>
-        </p>
     </div>
 </div>
 
